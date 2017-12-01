@@ -1,0 +1,61 @@
+
+* ToDo
+** TODO Draw a BlockShape (probably CmdShape) with quill. 
+
+* Notes, general
+Blocks are created (drawn) from a spec.
+See [[file:~/Documents/git/scratch-flash/src/blocks]] (right click to open in emacs). 
+
+* Notes on Scratch
+** .as is ActionScript
+** [[file:~/Documents/git/scratch-flash/src/blocks/][Blocks]] - the directory in scratch C-c C-o to view it with no action for .as files. 
+   (right click to open in emacs). 
+
+*** BlockShape.as
+// BlockShape handles drawing and resizing of a block shape.
+This seems to be the one to start with. Goal: draw some of these with quill.
+**** Some shapes
+***** Simple RectShape, BooleanShape, NumberShape, CmdShape, FinalCmdShape, HatShape, ProcHatShape
+***** C-shaped: LoopShape, FinalLoopShape
+
+***** E-shaped: IfElseShape
+
+	// Geometry
+	public static const NotchDepth:int = 3;
+	public static const EmptySubstackH:int = 12;
+	public static const SubstackInset:int = 15;
+
+*** Block.as
+// A Block is a graphical object representing a program statement (command)
+// or function (reporter). A stack is a sequence of command blocks, where
+// the following command and any nested commands (e.g. within a loop) are
+// children. Blocks come in a variety of shapes and usually have some
+// combination of label strings and arguments (also children).
+//
+// The Block class manages block shape, labels, arguments, layout, and
+// block sequence. It also supports generation of the labels and argument
+// sequence from a specification string (e.g. "%n + %n") and type (e.g. reporter).
+
+
+*** BlockArg.as
+// A BlockArg represents a Block argument slot. Some BlockArgs, contain
+// a text field that can be edited by the user. Others (e.g. booleans)
+// are immutable. In either case, they be replaced by a reporter block
+// of the right type. That is, dropping a reporter block onto a BlockArg
+// inside a block causes the BlockArg to be replaced by the reporter.
+// If a reporter is removed, a BlockArg is added to the block.
+//
+// To create a custom BlockArg widget such as a color picker, make a
+// subclass of BlockArg for the widget. Your constructor is responsible
+// for adding child display objects and setting its width and height.
+// The widget must initialize argValue and update it as the user
+// interacts with the widget. In some cases, the widget may need to
+// override the setArgValue() method. If the widget can accept dropped
+// arguments, it should set base to a BlockShape to support drag feedback.
+
+
+
+
+* Log
+** <2017-12-01 Fri>
+*** Started!
