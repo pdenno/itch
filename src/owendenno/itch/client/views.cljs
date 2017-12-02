@@ -3,12 +3,12 @@
             [clojure.pprint :refer (cl-format pprint)]
             [quil.core :as quil :include-macros true]
             [quil.middleware :as qm]
-            [owendenno.itch.client.draw :as draw :refer (setup-pn draw-pn pn-wheel-fn +display-pn+)]
+            [owendenno.itch.client.scripts :as scripts :refer (setup-scripts draw-scripts +scripts+)]
             [reagent.core :as reagent]
             [re-frame.core :as rf]))
 
 (rf/reg-sub :initial?     (fn [db _] (:initial? db)))
-(rf/reg-sub :draw         (fn [db _] (:draw db)))
+(rf/reg-sub :scripts      (fn [db _] (:scripts db)))
 (rf/reg-sub :evolve-state (fn [db _] (:evolve-state db)))
 (rf/reg-sub :requested-pn (fn [db _] (:requested-pn db))) 
 (rf/reg-sub :report       (fn [db _] (:report db)))
@@ -32,14 +32,13 @@
       [:li [:a {:href "#params"}"Parameters"]]
       [:li [:a {:href "#patterns"}"Message Patterns"]]]]]])
 
-(declare draw-it)
+(declare quil-scripts-tab)
 
 (defn quil-draw []
-  (let [pn @(rf/subscribe [:draw])]
-    (when (contains? pn :places)
-      (reset! draw/+display-pn+ (draw/pn-geom pn))
-      (draw-it))
-    [:canvas {:id "best-pn"}]))
+  (let [pn @(rf/subscribe [:scripts])
+        _ @(rf/subscribe [:initial?])]
+          (quil-scripts-tab)
+    [:canvas {:id "scripts-tab"}]))
 
 (defn drawing-area []
   [:div#draw {:class "col-md-8"}
@@ -109,17 +108,16 @@
                :on-change #(.-scrollHeight %) ; POD does nothing
                :style {:width "100%" :height "200px" :font-size "small"}}]])
 
-(defn draw-it []
-  (quil/defsketch best-pn 
-    :host "best-pn"
-    :title "Best Individual"
+(defn quil-scripts-tab []
+  (quil/defsketch scripts-tab 
+    :host "scripts-tab"
+    :title "Scripts"
     :settings #(fn [] (quil/smooth 2)) ; Smooth=2 is typical. Can't use pixel-density with js.
-    :setup draw/setup-pn
-    :draw draw/draw-pn
-    :mouse-wheel draw/pn-wheel-fn
+    :setup scripts/setup-scripts
+    :draw scripts/draw-scripts
     ;; POD I need a solution for getting it here! 
-    :size [(-> draw/graph-window-params :window-size :length)
-           (-> draw/graph-window-params :window-size :height)]))
+    :size [(-> scripts/graph-window-params :window-size :length)
+           (-> scripts/graph-window-params :window-size :height)]))
 
 (defn main [data]
   (let [_ @(rf/subscribe [:initial?])]

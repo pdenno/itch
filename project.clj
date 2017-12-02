@@ -8,15 +8,15 @@
                  [com.stuartsierra/component     "0.3.2"]
                  [environ                        "1.1.0"]
 
-                 [ring                       "1.6.2"]
+                 [ring                       "1.6.3"]
                  [ring/ring-defaults         "0.3.1"]
                  [compojure                  "1.6.0"]
                  [http-kit                   "2.2.0"]
                  
                  [reagent                    "0.7.0"]
-                 [reagent-forms              "0.5.31"]
+                 [reagent-forms              "0.5.32"]
                  [re-frame                   "0.10.2"] 
-                 [re-frisk                   "0.5.0"]
+                 [re-frisk                   "0.5.2"]
                  [org.webjars/bootstrap      "3.3.7"]
                  [quil                       "2.6.0"]]
 
