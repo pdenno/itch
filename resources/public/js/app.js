@@ -114,3 +114,6 @@ goog.addDependency("../re_frisk/core.js", ['re_frisk.core'], ['re_frisk.devtool'
 goog.addDependency("../owendenno/itch/client/app.js", ['owendenno.itch.client.app'], ['owendenno.itch.client.views', 'reagent.core', 'cljs.core', 're_frisk.core', 're_frame.core']);
 goog.addDependency("../owendenno/itch/client/start.js", ['owendenno.itch.client.start'], ['cljs.core', 'figwheel.client', 'owendenno.itch.client.app']);
 goog.addDependency("../owendenno/itch/start.js", ['owendenno.itch.start'], ['cljs.core', 'figwheel.client', 'owendenno.itch.client.app']);
+goog.addDependency("../figwheel/connect/build_client.js", ['figwheel.connect.build_client'], ['cljs.core', 'figwheel.client', 'figwheel.client.utils']);
+
+goog.require("figwheel.connect.build_client");

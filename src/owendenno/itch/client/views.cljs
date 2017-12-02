@@ -7,6 +7,12 @@
             [reagent.core :as reagent]
             [re-frame.core :as rf]))
 
+(rf/reg-sub :initial?     (fn [db _] (:initial? db)))
+(rf/reg-sub :draw         (fn [db _] (:draw db)))
+(rf/reg-sub :evolve-state (fn [db _] (:evolve-state db)))
+(rf/reg-sub :requested-pn (fn [db _] (:requested-pn db))) 
+(rf/reg-sub :report       (fn [db _] (:report db)))
+
 ;;; https://www.w3schools.com/bootstrap/bootstrap_theme_company.asp
 (defn nav []
   [:nav {:class "navbar navbar-default navbar-fixed-top"
@@ -28,16 +34,16 @@
 
 (declare draw-it)
 
-(defn quil-pn []
-  (let [pn @(rf/subscribe [:pn])]
+(defn quil-draw []
+  (let [pn @(rf/subscribe [:draw])]
     (when (contains? pn :places)
       (reset! draw/+display-pn+ (draw/pn-geom pn))
       (draw-it))
     [:canvas {:id "best-pn"}]))
 
 (defn drawing-area []
-  [:div#pn {:class "col-md-8"}
-   [quil-pn]])
+  [:div#draw {:class "col-md-8"}
+   [quil-draw]])
 
 (defn buttons []
   (let [evolve-state @(rf/subscribe [:evolve-state])
@@ -121,7 +127,7 @@
      [nav]
      [:div {:class "jumbotron text-center" :style {:background-color "#330066" :color "#ffffff"}} ; 
       [:h1 "Itch"]
-      [:p "System Identification for Smart Manufacturing"]]
+      [:p "A Scratch-like environment for functional programming"]]
      [:div {:class "container-fluid"}
       [:div {:class "row"}
        [drawing-area]
