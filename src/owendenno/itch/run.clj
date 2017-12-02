@@ -1,0 +1,41 @@
+(ns owendenno.itch.run
+  (:gen-class)
+  (:require [clojure.tools.logging :as log]
+            [com.stuartsierra.component :as component]
+            [clojure.tools.namespace.repl :refer [refresh refresh-all]]
+            [owendenno.itch.config :as config]
+            [owendenno.itch.system :as system]))
+
+(defonce system nil)
+
+;;; These are used in development AND production.
+(defn init []
+  (alter-var-root #'system (fn [_] (system/system (config/get-config))))) 
+
+(defn start []
+  (alter-var-root #'system component/start))
+
+(defn stop []
+  (alter-var-root #'system
+    (fn [s] (when s (component/stop s)))))
+
+(defn run []
+  (init)
+  (start)
+  system)
+
+(defn reset []
+  (stop)
+  ;; Reload changed files in dependency order, then do run/run. 
+  (refresh :after 'owendenno.run/run)) 
+
+;;; POD This is essential to getting past component!
+(defn app-info []
+  (:app system))
+
+;;; This is for production executable. 
+(defn -main [& args]
+  (let [config (config/get-config)]
+    (run)
+    (log/info "Itch started")
+    system))
