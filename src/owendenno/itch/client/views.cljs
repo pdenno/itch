@@ -7,11 +7,9 @@
             [reagent.core :as reagent]
             [re-frame.core :as rf]))
 
-(rf/reg-sub :initial?     (fn [db _] (:initial? db)))
-(rf/reg-sub :scripts      (fn [db _] (:scripts db)))
-(rf/reg-sub :evolve-state (fn [db _] (:evolve-state db)))
-(rf/reg-sub :requested-pn (fn [db _] (:requested-pn db))) 
-(rf/reg-sub :report       (fn [db _] (:report db)))
+(rf/reg-sub :initial?  (fn [db _] (:initial? db)))
+(rf/reg-sub :scripts   (fn [db _] (:scripts db)))
+(rf/reg-sub :run-state (fn [db _] (:run-state db)))
 
 ;;; https://www.w3schools.com/bootstrap/bootstrap_theme_company.asp
 (defn nav []
@@ -28,50 +26,34 @@
      [:a {:class "navbar-brand" :href "#myPage" :style {:color "#ffffff"}} "ITCH" ]] 
     [:div {:class "collapse navbar-collapse" :id "myNavbar"} 
      [:ul {:class "nav navbar-nav navbar-right"} 
-      [:li [:a {:href "#gp"}"GP"]]
-      [:li [:a {:href "#params"}"Parameters"]]
-      [:li [:a {:href "#patterns"}"Message Patterns"]]]]]])
+      [:li [:a {:href "#File"}"File"]]
+      [:li [:a {:href "#Edit"}"Edit"]]
+      [:li [:a {:href "#Tips"}"Tips"]]
+      [:li [:a {:href "#About"}"About"]]]]]])
 
 (declare quil-scripts-tab)
 
-(defn quil-draw []
-  (let [pn @(rf/subscribe [:scripts])
+(defn quil-scripts []
+  (let [_ @(rf/subscribe [:scripts])
         _ @(rf/subscribe [:initial?])]
           (quil-scripts-tab)
     [:canvas {:id "scripts-tab"}]))
 
-(defn drawing-area []
+(defn scripts-area []
   [:div#draw {:class "col-md-8"}
-   [quil-draw]])
+   [quil-scripts]])
 
 (defn buttons []
-  (let [evolve-state @(rf/subscribe [:evolve-state])
-        pn-id        @(rf/subscribe [:requested-pn])
-        report       @(rf/subscribe [:report])]
+  (let [run-state @(rf/subscribe [:run-state])]
     [:div {:class "container"}
-     [:div {:class "row"} [:strong "GP Control"]]
-     [:div {:class "row"} "Viewing PN (order): " pn-id]
      [:div {:class "row"}
       [:div {:class "btn-group btn-group-sm"}
        [:button {:class "btn btn-primary" :style {:background-color "#CC0066"}
-                 :disabled (not report)
-                 :on-click #(rf/dispatch [:sinet/requested-pn 1])} "Pop+"]
+                 :disabled (= run-state :run)
+                 :on-click #(rf/dispatch [:itch/run-state :run])} "Run"]
        [:button {:class "btn btn-primary" :style {:background-color "#CC0066"}
-                 :disabled (or (= pn-id :none) (= pn-id 0) )
-                 :on-click #(rf/dispatch [:sinet/requested-pn -1])} "Pop-"]]]
-     [:div {:class "row"}
-      [:div {:class "btn-group btn-group-sm"}
-       [:button {:class "btn btn-primary" :style {:background-color "#CC0066"}
-                 :disabled (= evolve-state :run)
-                 :on-click #(rf/dispatch [:sinet/evolve-state :run])} "Run"]
-       [:button {:class "btn btn-primary" :style {:background-color "#CC0066"}
-                 :disabled (not (= evolve-state :run))
-                 :on-click #(rf/dispatch [:sinet/evolve-state :pause])} "Pause"]
-       [:button {:class "btn btn-primary" :style {:background-color "#CC0066"}
-                 :disabled (not (= evolve-state :pause))
-                 :on-click #(rf/dispatch [:sinet/evolve-state :continue])} "Continue"]
-       [:button {:class "btn btn-primary" :style {:background-color "#CC0066"}
-                 :on-click #(rf/dispatch [:sinet/evolve-state :abort])} "Abort"]]]]))
+                 :disabled (not (= run-state :run))
+                 :on-click #(rf/dispatch [:itch/run-state :pause])} "Stop"]]]]))
 
 
 ;;; To render the DOM representation of some part of the app state, view functions must query
@@ -93,11 +75,10 @@
                  ": "
                  (get rmap key))]])))]))
 
-(defn buttons-report []
+(defn buttons-area []
   [:div#buttons-report {:class "col-md-4"}
    [:div {:class "container-fluid"}
-    [:div {:class "row"} [buttons]]
-    [:div {:class "row"} [report]]]])
+    [:div {:class "row"} [buttons]]]])
 
 ;;; Util for logging output to on-screen console
 (defn console-area []
@@ -128,8 +109,8 @@
       [:p "A Scratch-like environment for functional programming"]]
      [:div {:class "container-fluid"}
       [:div {:class "row"}
-       [drawing-area]
-       [buttons-report]]
+       [buttons-area]
+       [scripts-area]]
       [:div {:class "row"}
        [console-area]]]]))
 

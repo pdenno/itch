@@ -1,25 +1,22 @@
 
 * ToDo
-** TODO Draw a BlockShape (probably CmdShape) with quill. 
-
+** TODO Draw a BlockShape (probably CmdShape) with quil. 
 * Notes, general
-Blocks are created (drawn) from a spec.
-See [[file:~/Documents/git/scratch-flash/src/blocks]] (right click to open in emacs). 
+** Use of quil on scripts-tab/script-window:
+ It might be necessary for scripts-tab/scripts window to be one integrated quil thing.
+ Otherwise, I don't see how we can smoothly drag a Block from the Scripts-tab to the scripts-window.
 
 * Notes on Scratch
-** .as is ActionScript
-** [[file:~/Documents/git/scratch-flash/src/blocks/][Blocks]] - the directory in scratch C-c C-o to view it with no action for .as files. 
-   (right click to open in emacs). 
+** Blocks
+  [[file:~/Documents/git/scratch-flash/src/blocks/][Blocks]] (directory) -- right click to open in emacs. 
 
 *** BlockShape.as
-// BlockShape handles drawing and resizing of a block shape.
+// [[file:~/Documents/git/scratch-flash/src/blocks/BlockShape.as::*%20Scratch%20Project%20Editor%20and%20Player][BlockShape]] handles drawing and resizing of a block shape.
 This seems to be the one to start with. Goal: draw some of these with quill.
 **** Some shapes
 ***** Simple RectShape, BooleanShape, NumberShape, CmdShape, FinalCmdShape, HatShape, ProcHatShape
 ***** C-shaped: LoopShape, FinalLoopShape
-
 ***** E-shaped: IfElseShape
-
 	// Geometry
 	public static const NotchDepth:int = 3;
 	public static const EmptySubstackH:int = 12;
@@ -59,3 +56,6 @@ This seems to be the one to start with. Goal: draw some of these with quill.
 * Log
 ** <2017-12-01 Fri>
 *** Started!
+** <2017-12-02 Sat>
+*** Basic stuff for scripts tab/blocks
+ I'm guessing that the most basic useful block has 'CmdShape' (the Scratch term). 

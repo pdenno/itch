@@ -3,15 +3,19 @@
   {:author "Owen Denno"}
   (:require [quil.core :as q :include-macros true]
             [quil.middleware :as qm]
-            [cljs.pprint :refer (pprint)]))
-  
-(defn ppp []
-  (binding [cljs.pprint/*print-right-margin* 140]
-    (pprint *1)))
+            #?(:cljs [cljs.pprint :refer (pprint)])
+            #?(:clj  [clojure.pprint :refer (pprint)])
+            [owendenno.itch.client.blockshape :as bs]))
 
-(defn ppprint [arg]
-  (binding [cljs.pprint/*print-right-margin* 140]
-    (pprint arg)))
+#?(:cljs 
+   (defn ppp []
+     (binding [cljs.pprint/*print-right-margin* 140]
+       (pprint *1))))
+
+#?(:cljs    
+   (defn ppprint [arg]
+     (binding [cljs.pprint/*print-right-margin* 140]
+       (pprint arg))))
 
 (def +lock-mouse-on+ (atom nil))
 (def +hilite-elem+ (atom nil))
@@ -30,15 +34,13 @@
 (declare nearest-elem angle distance hilite-elem! handle-move!)
 
 (defn draw-scripts []
-  (q/background 230) ; POD not sure I want to keep this.
-  (q/stroke 0) ; black
-  (q/fill 255) ; white
+  (q/background 230)
   (q/stroke-weight 1)
   (hilite-elem! @+scripts+)
   (if (q/mouse-pressed?)
     (handle-move!)
     (reset! +lock-mouse-on+ nil))
-  (q/rect 10 10 100 100))
+  (bs/cmd-shape 10 10))
 
 (def +diag+ (atom nil))
 
@@ -104,9 +106,18 @@
      :x2 (/ (- (* D dy) (* sgnDy dx rootTerm)) denom)
      :y2 (/ (- (- (* D dx)) (* (Math/abs dy) rootTerm)) denom)}))
 
-;;; The  quil/defsketch is in views.cljs. (Otherwise it doesn't load.) 
-
-;;;---------------- window/rescaling  stuff ------------------------
 (def graph-window-params {:window-size {:length 900 :height 500}
                           :x-start 30 :y-start 30})
+#?(:clj
+ (defn show-it []
+  (q/defsketch scripts-tab 
+    :host "scripts-tab"
+    :title "Scripts"
+    :features [:keep-on-top] 
+    :settings #(fn [] (q/smooth 2) ; Smooth=2 is typical. Can't use pixel-density with js.
+                 #?(:clj (q/pixel-density (q/display-density))))
+    :setup setup-scripts
+    :draw  draw-scripts
+    :size [(-> graph-window-params :window-size :length)
+           (-> graph-window-params :window-size :height)])))
 

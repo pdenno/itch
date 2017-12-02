@@ -37,7 +37,8 @@ goog.addDependency("../quil/middlewares/navigation_3d.js", ['quil.middlewares.na
 goog.addDependency("../quil/middlewares/navigation_2d.js", ['quil.middlewares.navigation_2d'], ['cljs.core', 'quil.core']);
 goog.addDependency("../quil/middlewares/fun_mode.js", ['quil.middlewares.fun_mode'], ['cljs.core', 'quil.core']);
 goog.addDependency("../quil/middleware.js", ['quil.middleware'], ['cljs.core', 'quil.middlewares.navigation_3d', 'quil.middlewares.navigation_2d', 'quil.middlewares.fun_mode']);
-goog.addDependency("../owendenno/itch/client/scripts.js", ['owendenno.itch.client.scripts'], ['cljs.core', 'cljs.pprint', 'quil.core', 'quil.middleware']);
+goog.addDependency("../owendenno/itch/client/blockshape.js", ['owendenno.itch.client.blockshape'], ['cljs.core', 'cljs.pprint', 'quil.core', 'quil.middleware']);
+goog.addDependency("../owendenno/itch/client/scripts.js", ['owendenno.itch.client.scripts'], ['cljs.core', 'owendenno.itch.client.blockshape', 'cljs.pprint', 'quil.core', 'quil.middleware']);
 goog.addDependency("../cljsjs/react/development/react.inc.js", ['cljsjs.react'], []);
 goog.addDependency("../cljsjs/create-react-class/development/create-react-class.inc.js", ['cljsjs.create_react_class'], ['cljsjs.react']);
 goog.addDependency("../reagent/interop.js", ['reagent.interop'], ['cljs.core']);
