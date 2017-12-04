@@ -1,4 +1,4 @@
-(ns owendenno.itch.client.blockshape
+(ns owendenno.itch.client.block
   "BlockShape handles drawing and resizing of a block."
   {:author "Owen Denno"}
   (:require [quil.core :as q :include-macros true]
