@@ -1,6 +1,12 @@
 
 * ToDo
-** TODO Draw a BlockShape (probably CmdShape) with quil. 
+** DONE Draw a BlockShape (probably CmdShape) with quil. 
+   CLOSED: [2017-12-04 Mon 07:53]
+** TODO Move blocks.
+** TODO Make text/number fields editable. (Make number fields.)
+** TODO Create stacks.
+** TODO Create C and E style blocks, other blocks.
+** TODO Create scripts tab
 * Notes, general
 ** Use of quil on scripts-tab/script-window:
  It might be necessary for scripts-tab/scripts window to be one integrated quil thing.
@@ -59,3 +65,16 @@ This seems to be the one to start with. Goal: draw some of these with quill.
 ** <2017-12-02 Sat>
 *** Basic stuff for scripts tab/blocks
  I'm guessing that the most basic useful block has 'CmdShape' (the Scratch term). 
+** <2017-12-03 Sun>
+*** I probably won't need this:
+(defn widget-interleave
+  [features]
+  "Create a vector of text/widget features i
+  (let [text    (:text features)
+        widgets (:widgets features)
+        inter (vec (interleave text widget))]
+    (if (== (count text) (coutn widget))
+      inter
+      (conj inter (last text)))))
+
+*** I wrote/arranged the basic block widgets (text and text fields in widgets). 

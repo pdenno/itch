@@ -5,7 +5,7 @@
             [quil.middleware :as qm]
             #?(:cljs [cljs.pprint :refer (pprint)])
             #?(:clj  [clojure.pprint :refer (pprint)])
-            [owendenno.itch.client.blockshape :as bs]))
+            [owendenno.itch.client.block :as bl]))
 
 #?(:cljs
    (defn ppp []
@@ -28,22 +28,10 @@
 
 (defn setup-scripts []
   (q/frame-rate 20)    ; FPS. 10 is good
-  #_(q/text-font (q/create-font "DejaVu Sans" 12 true))
   (q/text-font (q/create-font "Verdana-Bold" 12 true))
   (q/background 200)) ; light grey
 
 (declare nearest-elem angle distance hilite-elem! handle-move!)
-
-(defn say-for
-  "The 'say' cmd block"
-  [x y text time]
-  (bs/cmd-shape
-   x y 
-   {:cmd :say-for
-    :category :looks
-    :text ["say" "for" "sec"]
-    :widgets [{:type :text   :default "Hello!"}
-              {:type :number :default 2}]}))
 
 (defn draw-scripts []
   (q/background 230)
@@ -52,7 +40,7 @@
   (if (q/mouse-pressed?)
     (handle-move!)
     (reset! +lock-mouse-on+ nil))
-  (bs/draw-script-blocks))
+  (bl/draw-script-blocks))
 
 (def +diag+ (atom nil))
 
