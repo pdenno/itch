@@ -7,12 +7,12 @@
             #?(:clj  [clojure.pprint :refer (pprint)])
             [owendenno.itch.client.blockshape :as bs]))
 
-#?(:cljs 
+#?(:cljs
    (defn ppp []
      (binding [cljs.pprint/*print-right-margin* 140]
        (pprint *1))))
 
-#?(:cljs    
+#?(:cljs
    (defn ppprint [arg]
      (binding [cljs.pprint/*print-right-margin* 140]
        (pprint arg))))
@@ -28,10 +28,22 @@
 
 (defn setup-scripts []
   (q/frame-rate 20)    ; FPS. 10 is good
-  (q/text-font (q/create-font "DejaVu Sans" 12 true))
+  #_(q/text-font (q/create-font "DejaVu Sans" 12 true))
+  (q/text-font (q/create-font "Verdana-Bold" 12 true))
   (q/background 200)) ; light grey
 
 (declare nearest-elem angle distance hilite-elem! handle-move!)
+
+(defn say-for
+  "The 'say' cmd block"
+  [x y text time]
+  (bs/cmd-shape
+   x y 
+   {:cmd :say-for
+    :category :looks
+    :text ["say" "for" "sec"]
+    :widgets [{:type :text   :default "Hello!"}
+              {:type :number :default 2}]}))
 
 (defn draw-scripts []
   (q/background 230)
@@ -40,7 +52,7 @@
   (if (q/mouse-pressed?)
     (handle-move!)
     (reset! +lock-mouse-on+ nil))
-  (bs/cmd-shape 10 10))
+  (bs/draw-script-blocks))
 
 (def +diag+ (atom nil))
 
@@ -106,7 +118,7 @@
      :x2 (/ (- (* D dy) (* sgnDy dx rootTerm)) denom)
      :y2 (/ (- (- (* D dx)) (* (Math/abs dy) rootTerm)) denom)}))
 
-(def graph-window-params {:window-size {:length 900 :height 500}
+(def graph-window-params {:window-size {:length 600 :height 400}
                           :x-start 30 :y-start 30})
 #?(:clj
  (defn show-it []
