@@ -45,7 +45,9 @@ BTW: "Use quil-cljs Leiningen template to create a project from scratch:"
      --> lein new quil-cljs hello-quil
 
 ** Quil fuzzyness problem in browser
- [[http://nbeloglazov.com/2014/05/29/quil-intro.html][Quil intro examples]] isn't fuzzy like my stuff!   But they are gifs!
+  Scratch is fuzzy too.   
+
+
 * Notes on Scratch
 ** Blocks
   [[file:~/Documents/git/scratch-flash/src/blocks/][Blocks]] (directory) -- right click to open in emacs. 

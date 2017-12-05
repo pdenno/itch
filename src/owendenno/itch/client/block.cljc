@@ -14,8 +14,8 @@
 (def ^:private notch-r1 (+ notch-l2 8))
 (def ^:private notch-r2 (+ notch-r1 notch-depth))
 
-(def ^:private BottomBarH 16) ; height of the bottom bar of a C or E block
-(def ^:private DividerH 18)   ; height of the divider bar in an E block
+(def ^:private bottom-bar-h 16) ; height of the bottom bar of a C or E block
+(def ^:private divider-h 18)    ; height of the divider bar in an E block
 
 ;;; https://www.sessions.edu/color-calculator/
 (defn shape-color
@@ -46,23 +46,26 @@
 (def text-rect-extend "add to right of text rectangles" 10)
 (def text-y-offset "distance downward from block (xs, ys)." 15)
 
+(defn make-block
+  "Add to the block spec information that can only be added inside defsketch."
+  [bmap]
+  (assoc bmap :points (cmd-pts (:x bmap) (:y bmap) (block-len (:content bmap)))))
+
 (defn draw-block!
   "Draw a shape and return its features object."
-  [x y features]
-  (let [len (block-len (:content features))
-        fill-color (shape-color (-> features :info :tab))]
+  [block]
+  (let [x (:x block)
+        y (:y block)
+        fill-color (shape-color (-> block :info :tab))]
     (apply q/stroke fill-color) 
     (apply q/fill   fill-color)
     (q/begin-shape)
-    (doall (map (fn [[x y]] (q/vertex x y)) (cmd-pts x y len)))  ; POD (draw-shape! (-> features :info :shape))
+    (doall (map (fn [[x y]] (q/vertex x y)) (:points block)))
     (q/end-shape)
     (reduce (fn [xpos widget]
               (+ xpos (draw-content! widget xpos y)))
             (+ x tab-right)
-            (:content features))
-    (-> features
-        (assoc :x x)
-        (assoc :y y))))
+            (:content block))))
 
 ;;; POD ToDo: Write a :number widget
 (defn draw-content!
@@ -71,28 +74,29 @@
   (cond (string? widget)
         (do (q/fill 255)
             (q/text widget x (+ y text-y-offset))
-            (+ tab-right (q/text-width widget)))
+            (Math/round (+ tab-right (q/text-width widget))))
         (= :text (:type widget))
         (let [text (or (:default widget) " ")
               w    (q/text-width text)]
           (q/with-fill [255] (q/rect x (+ y 3) (+ w text-rect-extend) text-y-offset))
           (q/with-fill [0  ] (q/text text (+ x 5) (+ y text-y-offset)))
-          (+ w tab-right text-rect-extend))))
+          (Math/round (+ w tab-right text-rect-extend)))))
 
 (defn block-len
   "Return the required length to display the features (strings and  widget maps)."
   [features]
-  (-
-   (reduce (fn [sum feat]
-             (if (string? feat)
-               (+ sum tab-right (q/text-width feat))
-               (+ sum tab-right
-                  (case (:type feat)
-                    :text   (+ (q/text-width (str (:default feat))) text-rect-extend)
-                    :number (+ (q/text-width (str (:default feat))) text-rect-extend)))))
-           0
-           features)
-   (* 4 tab-right))) ; POD 4: no idea!
+  (Math/round
+   (-
+    (reduce (fn [sum feat]
+              (if (string? feat)
+                (+ sum tab-right (q/text-width feat))
+                (+ sum tab-right
+                   (case (:type feat)
+                     :text   (+ (q/text-width (str (:default feat))) text-rect-extend)
+                     :number (+ (q/text-width (str (:default feat))) text-rect-extend)))))
+            0
+            features)
+    (* 4 tab-right)))) ; POD 4: no idea!
 
 (def cmd-thick "Thickness of the cmd-shape" 20)
 ;;;         nl1    nl2
@@ -119,37 +123,3 @@
         y-vals2 (mapv #(+ % cmd-thick) y-vals2)
         y-vals (into y-vals1 y-vals2)]
     (mapv #(vector %1 %2) (conj x-vals xs) (conj y-vals ys))))
-
-(defn draw-script-blocks
-  "Mostly just for testing."
-  []
-  (draw-block! 10 10 {:info {:tab :looks :block :say :shape :cmd}
-                      :content ["say"
-                                {:type :text :default "Hello!"}
-                                "for"
-                                {:type :text :default "1"}
-                                "sec"]})
-  (draw-block! 10 40 {:info {:tab :looks :block :say :shape :cmd}
-                      :content ["say" {:type :text :default "Hello!"}]})
-  (draw-block! 10 70 {:info {:tab :motion :block :say :shape :cmd}
-                      :content ["say" {:type :text :default "Hello, Owen!"}]})
-  (draw-block! 10 100 {:info {:tab :pen :block :say :shape :cmd}
-                      :content ["say" {:type :text :default "Hello, Owen!"}]})
-  (draw-block! 10 130 {:info {:tab :data :block :say :shape :cmd}
-                       :content ["say something really long"
-                                 {:type :text :default "Hello, Owen! What's more to say?"}]})
-  (draw-block! 10 160 {:info {:tab :data :block :say :shape :cmd}
-                       :content ["say something"
-                                 {:type :text :default "Hello, Owen!"}
-                                 "then wait for"
-                                 {:type :text :default "2"}
-                                 "sec, then wait for" 
-                                 {:type :text :default "3"}
-                                 "sec"]}))
-
-               
-
-
-
-
-
