@@ -6,15 +6,53 @@
 ** TODO Make text/number fields editable. (Make number fields.)
 ** TODO Create stacks.
 ** TODO Create C and E style blocks, other blocks.
-** TODO Create scripts tab
+** TODO Create scripts tab.
+** TODO Investigate GUI plugins.  
 * Notes, general
 ** Use of quil on scripts-tab/script-window:
  It might be necessary for scripts-tab/scripts window to be one integrated quil thing.
  Otherwise, I don't see how we can smoothly drag a Block from the Scripts-tab to the scripts-window.
 
+**  GUI Plugins:
+
+What does cross mode mean and why "the Processings"? The future 2.0 Processing will have "modes" 
+which are additional language flavours to write and use Processing in. One is the JavaScript mode 
+which is based upon Processing.js. Guido is an attempt at writing a GUI library that supports both 
+Java and JavaScript, so any sketch using it should run on both modes.
+
+*** [[https://github.com/fjenett/Guido][Guido]] : Not touched in 4 years. Has a JS mode (for "the future 2.0 Processing"). 
+*** [[http://www.lagers.org.uk/g4p/][G4P]] Looks like it has everything you'd want for 2d GUIs... Does not work in Javascript mode. 
+       May be useful to build your own in ClojureScript.
+*** [[https://github.com/sojamo/controlp5#javascript][Controlp5]] : Not touched in 2 years. 
+Currently there is no javascript version of ControlP5, though I had started implementing a 
+slimmed down version for processing.js but since it is currently unclear which javascript 
+version - processing.js or p5.js - will become the default js version of processing, 
+controlP5.js is on hold. There is a tendency that p5.js will become the primary 
+javascript environment [I note that the Processing Foundation supports Processing (java)
+p5.js and Processing.py.]
+
+*** So what to do?
+I think maybe just write my own, following the design of G4P, which has small
+files implementing lots of things. 
+
+** Processing version 
+*** [[http://processingjs.org/download/][Processing.js]] Last version is March, 2014. 
+*** [[p5.js][https://p5js.org/]]  Last version is October, 2017.
+    [[https://github.com/bitcraftlab/p5.gui][p5.gui last update was 4 months ago]]. 
+
+Problem?: Processing.js library is used as rendering backend for Quil on ClojureScript.
+BTW: "Use quil-cljs Leiningen template to create a project from scratch:"
+     --> lein new quil-cljs hello-quil
+
+** Quil fuzzyness problem in browser
+ [[http://nbeloglazov.com/2014/05/29/quil-intro.html][Quil intro examples]] isn't fuzzy like my stuff!   But they are gifs!
 * Notes on Scratch
 ** Blocks
   [[file:~/Documents/git/scratch-flash/src/blocks/][Blocks]] (directory) -- right click to open in emacs. 
+** Functional Reactive Programming
+ Should this be what we are after? Use map, reduce, filter to do animation?  [[https://en.wikipedia.org/wiki/Functional_reactive_programming][FRP on Wikipedia]]
+
+  Evan Czaplicki's [[https://www.seas.harvard.edu/sites/default/files/files/archived/Czaplicki.pdf][Paper on Elm]]. 
 
 *** BlockShape.as
 // [[file:~/Documents/git/scratch-flash/src/blocks/BlockShape.as::*%20Scratch%20Project%20Editor%20and%20Player][BlockShape]] handles drawing and resizing of a block shape.
