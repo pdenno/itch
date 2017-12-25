@@ -2,7 +2,9 @@
 
 A scratch-like program for functional programming.
 
-![alt text](https://github.com/pdenno/itch/doc/itch-image-1.jpg "Example of where we are now")
+![alt text][logo]
+
+[logo]: https://github.com/pdenno/itch/doc/itch-image-1.jpg Where we are now.
 
 ## Installation
 
