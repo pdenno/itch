@@ -1,6 +1,8 @@
 # itch
 
-FIXME: description
+A scratch-like program for functional programming.
+
+![alt text](https://github.com/pdenno/itch/doc/image-1.jpg "Example of where we are now")
 
 ## Installation
 

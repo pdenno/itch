@@ -4,8 +4,12 @@
    CLOSED: [2017-12-04 Mon 07:53]
 ** TODO Move blocks.
 ** TODO Make text/number fields editable. (Make number fields.)
+** TODO Pulldown list on blocks
 ** TODO Create stacks.
 ** TODO Create C and E style blocks, other blocks.
+** TODO Effects window / executor
+** TODO Nesting & expanding blocks
+** TODO Shadowing on blocks
 ** TODO Create scripts tab.
 ** TODO Investigate GUI plugins.  
 * Notes, general
@@ -45,16 +49,24 @@ BTW: "Use quil-cljs Leiningen template to create a project from scratch:"
      --> lein new quil-cljs hello-quil
 
 ** Quil fuzzyness problem in browser
-  Scratch is fuzzy too.   
+  Scratch is fuzzy too, but only sometimes. Is it a matter of the display used? 
 
-
-* Notes on Scratch
-** Blocks
-  [[file:~/Documents/git/scratch-flash/src/blocks/][Blocks]] (directory) -- right click to open in emacs. 
 ** Functional Reactive Programming
  Should this be what we are after? Use map, reduce, filter to do animation?  [[https://en.wikipedia.org/wiki/Functional_reactive_programming][FRP on Wikipedia]]
 
   Evan Czaplicki's [[https://www.seas.harvard.edu/sites/default/files/files/archived/Czaplicki.pdf][Paper on Elm]]. 
+
+* Notes on Scratch
+** General observations
+*** The 'scripts tab' includes all the construction area to the right, likewise for "costumes" and "sounds."
+*** Shadowing is useful
+  When you nest things deeply, shadowing helps convey that point. 
+  It is darker than the object on right and down, lighter than the object left and up. 
+*** Things expand as they are embedded (look at embedded deeply joins). 
+
+** Blocks
+  [[file:~/Documents/git/scratch-flash/src/blocks/][Blocks]] (directory) -- right click to open in emacs. 
+
 
 *** BlockShape.as
 // [[file:~/Documents/git/scratch-flash/src/blocks/BlockShape.as::*%20Scratch%20Project%20Editor%20and%20Player][BlockShape]] handles drawing and resizing of a block shape.

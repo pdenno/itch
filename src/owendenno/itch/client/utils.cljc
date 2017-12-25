@@ -6,15 +6,31 @@
             #?(:cljs [cljs.pprint :refer (pprint)])
             #?(:clj  [clojure.pprint :refer (pprint pp)])))
 
+;;;=== General =========================
+(defn ppp []
+  (binding [clojure.pprint/*print-right-margin* 140]
+    (pprint *1)))
 
+(defn ppprint [arg]
+  (binding [clojure.pprint/*print-right-margin* 140]
+    (pprint arg)))
+
+(defn break
+  ([] (throw (ex-info "Break!" {})))
+  ([text] (throw (ex-info text {})))
+  ([text args] (throw (ex-info text args))))
+
+;;;=== Geometry =========================
 (defn rotate [x y theta]
   "Rotate (x,y) theta radians about origin."
   {:x (double (- (* (Math/cos theta) x) (* (Math/sin theta) y)))
    :y (double (+ (* (Math/sin theta) x) (* (Math/cos theta) y)))}) 
 
-
 (defn distance
-  ([x1 y1 x2 y2] (Math/sqrt (+ (Math/pow (- x1 x2) 2) (Math/pow (- y1 y2) 2))))
+  ([x1 y1 x2 y2]
+   (let [xdif (- x1 x2)
+         ydif (- y1 y2)]
+     (Math/sqrt (+ (* xdif xdif) (* ydif ydif)))))
   ([line] (let [[x1 y1 x2 y2] line] (distance x1 y1 x2 y2))))
 
 (defn angle [x1 y1 x2 y2]

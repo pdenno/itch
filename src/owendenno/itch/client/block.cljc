@@ -49,7 +49,10 @@
 (defn make-block
   "Add to the block spec information that can only be added inside defsketch."
   [bmap]
-  (assoc bmap :points (cmd-pts (:x bmap) (:y bmap) (block-len (:content bmap)))))
+  (let [len (block-len (:content bmap))]
+    (-> bmap
+        (assoc :len len)
+        (assoc :points (cmd-pts (:x bmap) (:y bmap) len)))))
 
 (defn draw-block!
   "Draw a shape and return its features object."
